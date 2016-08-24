@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+
+	<!--FOR METHOD 1-->
+	
+		.red{
+			color: red;
+		}
+		.green{
+			color:green;
+		}
+	</style>
+	<script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.3.0.js"></script>
+	
+</head>
+<body>
+<div>
+	<span>Please enter: </span><input data-bind="value: price" >                    
+<!--METHOD 1(Conditions in the data-bind)
+
+	<p data-bind="visible: price()!=null,visible: /^ *[0-9]+ *$/.test(price()),text: price() > 50 ? 'gold is exp':'gold is cheap',css:{red: price() > 50, green: price() <= 50}"></p>
+	<p data-bind="visible: price() == null, text: price() == null ? 'Please fill in the box' : '' "></p>
+    <p data-bind="visible: price() != null, text: /^ *[0-9]+ *$/.test(price())== false ? 'Invalid' : ''"></p>
+
+-->
+
+<!--METHOD 2(Calling afunction in the data-bind)-->
+
+<p data-bind="text: a,text: message,css: {green: message()=='Gold is affordable',red: message()=='Gold is expensive'}"></p>    
+</div>
+<script type="text/javascript">
+'use strict';
+	function AppviewModel(){
+		var self=this;
+		self.price=ko.observable();
+		self.message=ko.observable();
+
+		self.a= ko.computed(function() {
+		if(/^ *[0-9]+ *$/.test(self.price()) && self.price() != null) {
+			if (self.price() > 50) {
+                 self.message('Gold is expensive');
+      		}
+			else {
+				 self.message('Gold is affordable');
+			}
+		}
+		else if(/^ *[0-9]+ *$/.test(self.price()) == false && self.price() != null )
+		{
+			self.message('Not a number');
+		}
+		else if(self.price() == null)
+		{
+			self.message('Filling is mandatory');
+		}
+	});
+}
+ko.applyBindings(new AppviewModel());
+</script>
+</body>
+</html>

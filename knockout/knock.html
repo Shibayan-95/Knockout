@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        body { font-family: arial; font-size: 14px; }
+.container { padding: 1em; background-color: #eeeeee; border: 1px solid #CCC; max-width: 655px; }
+.container input { font-family: Arial; }
+.container h2 { margin-top: 0.4em; font-weight: bold; font-size: 1.2em; }
+    </style>
+   <script src="http://knockoutjs.com/downloads/knockout-3.3.0.js"></script>
+    
+    
+ 
+</head>
+<body>
+<div id='container'>   
+    <p>First name: <span data-bind='text:firstName'></span></p> 
+    <p>Last name:  <span data-bind='text:lastName'></span></p> 
+     <button data-bind="click:changeName">
+   Change Name
+   </button>
+    
+</div>
+
+<div id='container1'>   
+    <p>First name: <span data-bind='text:firstName'></span></p> 
+    <p>Last name:  <span data-bind='text:lastName'></span></p> 
+     <button id="1" data-bind="click:changeName">
+   Change Name
+   </button>
+    
+</div>
+
+   <script type="text/javascript">
+    'use strict';
+        // dummy data model
+var ViewModel = function(first, last) {
+    this.firstName = ko.observable(first);
+    this.lastName = ko.observable(last);
+    
+     this.changeName = function (){
+             this.firstName('jerin');
+     }
+     //return changename();
+ };
+var ViewModel2 = function(first, last) {
+    this.firstName = ko.observable(first);
+    this.lastName = ko.observable(last);
+    
+     this.changeName = function (){
+             this.firstName('jerin2');
+     }
+     //return changename();
+ };
+
+  
+ko.applyBindings(new ViewModel("Knockout", "Earth"), document.getElementById('container')); // This makes Knockout get to work
+ko.applyBindings(new ViewModel2("Knockout", "Earth"), document.getElementById('container1')); // This makes Knockout get to work
+
+    </script>
+</body>
+</html>

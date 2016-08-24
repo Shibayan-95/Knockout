@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+	table{
+  width: 350px;		
+  border: 1px solid black;
+}
+table th{
+	width: 70px;
+}
+table td{
+  border: 1px solid black;
+}
+</style>
+	<title></title>
+	<script src="http://knockoutjs.com/downloads/knockout-3.3.0.js"></script>
+</head>
+<body>
+
+<table >
+<tr>
+	<th>Employee id</th>
+	<th>First name</th>
+	<th>Last name</th>
+	<th>Company</th>
+	<th>Action</th>
+</tr>
+</table>
+<table data-bind="foreach: arr() ">
+<tr>
+	<td ><span data-bind="text: Empid"></span></td>
+    <td data-bind="text: FirstName"></td>
+    <td data-bind="text: LastName"></td>
+	<td data-bind="text: Company"></td>
+	<td><button data-bind="click: $root.rem1">Remove</button></td>
+	<td><button data-bind="click: $root.disp">Display</button></td> 
+	</tr>	
+	</table>
+	<div >
+	<p>Employee ID<input data-bind="value: message1"></input></p>
+    <p>First Name<input data-bind="value: message2"></input></p>
+    <p>Last Name<input data-bind="value: message3"></input></p>
+	<p>Company<input data-bind="value: message4"></input></p>
+	<button data-bind="click: save ">Save</button>
+	</div>
+	
+	<script type="text/javascript">
+	function AppViewModel(){
+		var self=this;
+		self.Empid=ko.observable();
+		self.LastName=ko.observable();
+		self.FirstName=ko.observable();
+		self.Company=ko.observable();
+		self.message1= ko.observable();
+		self.message2= ko.observable();
+		self.message3= ko.observable();
+		self.message4= ko.observable();
+		self.arr= ko.observableArray([{Empid: '16538',FirstName: 'Shibayan',LastName: 'Chakraborty',Company: 'Cybage'},{Empid: '16533',FirstName: 'Jainik',LastName: 'Khokhani',Company: 'Cybage'},{Empid: '16530',FirstName: 'Shweta',LastName: 'Kumari',Company: 'Cybage'},{Empid: '16534',FirstName: 'Varsha',LastName: 'Israni',Company: 'Cybage'}]);
+		self.arr2=ko.observableArray([{Empid: '',FirstName: '',LastName: '',Company: ''}])
+		self.rem1=function(){
+			self.arr.remove(this);
+		}
+        self.disp=function(){
+                  self.message1(this.Empid);
+                  self.message2(this.FirstName);
+                  self.message3(this.LastName);
+                  self.message4(this.Company);
+        }
+        self.save=function(){
+        	     // self.message1(self.message1);
+        	   //  self.message1(self.arr2.Empid) ;
+        	    //self.Empid(this.message1);
+        	    /*self.arr2[0].Empid=self.message1(self.arr.Empid);
+        	     self.arr2[0].FirstName=self.message1(self.arr.FirstName);
+        	      self.arr2[0].LastName=self.message1(self.arr.LastName);
+        	       self.arr2[0].Company=self.message1(self.arr.Company);
+                */
+
+               // this.a= self.arr.indexOf(self.Empid);
+               for(var i in self.arr){
+   var a;
+               this.a= self.message1(this.Empid);
+                }
+                console.log(a);
+              //  self.arr.splice(this.a,this.a,self.arr2[0]);
+                //console.log(self.Empid(this.message1));
+        }
+        console.log(self.message1);
+	}
+	ko.applyBindings(new AppViewModel());
+</script>
+</body>
+</html>
