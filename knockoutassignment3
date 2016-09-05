@@ -1,0 +1,251 @@
+//Fetching data from .JSON file and showing it in tabular form,performing editting,deleting,adding and sorting functions
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="http://knockoutjs.com/downloads/knockout-3.3.0.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="komap.js"></script>
+	<style type="text/css">
+  table.table div.sortable {
+            cursor: pointer;
+
+            user-select: none;
+        }
+
+            table.table div.sortable i {
+                width: 13px;
+                margin-left: 7px;
+                display: inline-block;
+            }
+	</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<!--Adding a new employee-->
+
+<div>
+	<button class="btn btn-primary" data-bind="click: addnew ">Add New Employee</button>
+	<div data-bind="visible:visibility2">
+	<p>First Name<input data-bind="value: newfirstnamemessage"></p>
+	<p>Last Name<input data-bind="value: newlastnamemessage"></p>
+    <p>Email<input data-bind="value: newemailmessage"></p>
+	<p>Date Of Joining<input data-bind="value: newdojmessage"></p>
+	<p>Extension<input data-bind="value: newextmessage"></p>
+	<p>isOnBench <label>True<input type="radio" value="True" data-bind="checked: newisOnBenchmessage" name="newisOnBenchmessage"></label>
+	<label>False<input type="radio" value="False" data-bind="checked: newisOnBenchmessage" name="newisOnBenchmessage"></label></p>	
+	<button class="btn btn-primary" data-bind="click: add ">Add</button>
+	</div>
+</div>
+
+<!--Displaying data in tabular format from JSON file-->
+
+<table id="playersTable" class="table table-striped">
+        <thead>
+            <tr data-bind="foreach: columns">
+                <th>
+                        <div class="sortable" data-bind="click: $root.sortClick.bind(property)">
+                        <span data-bind="html: header"></span><i data-bind="css: state"></i>
+                    </div>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: data">
+            <tr>
+                <td data-bind="text: FirstName"></td>
+                <td data-bind="text: LastName"></td>
+                <td data-bind="text: Email"></td>
+                <td data-bind="text: DateOfJoining"></td>
+                <td data-bind="text: Extension"></td>
+                <td data-bind="text: isOnBench"></td>
+                <td><button class="btn btn-link" data-bind="click: $parent.rem1">Remove</button></td>
+	            <td><button class="btn btn-link" data-bind="click: $parent.disp">Edit</button></td> 
+            </tr>
+        </tbody>
+    </table>
+
+<!--Providing Editting options in a DIV-->
+
+<div class="form-horizontal" data-bind="visible: visibility">
+	<p><label>First Name</label><input data-bind="value: firstnamemessage"></p>
+	<p><label>Last Name</label><input data-bind="value: lastnamemessage"></p>
+    <p><label>Email</label><input data-bind="value: emailmessage"></p>
+	<p><label>Date Of Joining</label><input data-bind="value: dojmessage"></p>
+	<p><label>Extension</label><input data-bind="value: extmessage"></p>
+	<p><label>isOnBench</label><input data-bind="value: isOnBenchmessage"></p>
+	<button class="btn btn-primary" data-bind="click: save ">Save</button>
+</div>
+
+<script type="text/javascript">
+$.getJSON("package.json",function(data){
+	function AppViewModel(){
+           var self=this;
+           var a;
+           self.descending = "glyphicon glyphicon-arrow-up";
+            self.ascending = "glyphicon glyphicon-arrow-down";
+           self.visibility=ko.observable(false);
+           self.visibility2=ko.observable(false);
+           self.firstnamemessage=ko.observable();
+           self.lastnamemessage=ko.observable();
+           self.emailmessage=ko.observable();
+           self.dojmessage=ko.observable();
+           self.extmessage=ko.observable();
+           self.isOnBenchmessage=ko.observable("False");
+           self.mess1=ko.observable();
+           self.mess2=ko.observable();
+           self.mess3=ko.observable();
+           self.mess4=ko.observable();
+           self.mess5=ko.observable();
+           self.mess6=ko.observable();
+           self.newfirstnamemessage=ko.observable();
+           self.newlastnamemessage=ko.observable();
+           self.newemailmessage=ko.observable();
+           self.newdojmessage=ko.observable();
+           self.newextmessage=ko.observable();
+           self.newisOnBenchmessage=ko.observable();
+           ko.mapping.fromJSON(data,{},self);
+			self.data=ko.observableArray(data.Employees);
+			self.columns = ko.observableArray([
+           { property: "FirstName", header: "FirstName", type: "string", state: ko.observable("") },
+           { property: "LastName", header: "LastName", type: "string", state: ko.observable("") },
+           { property: "Email", header: "Email", type: "string", state: ko.observable("") },
+           { property: "DateOfJoining", header: "DateOfJoining", type: "date", state: ko.observable("") },
+           { property: "Extension", header: "Extension", type: "number", state: ko.observable("") },  
+           { property: "isOnBench", header: "isOnBench", type: "boolean", state: ko.observable("") },  
+ ]);
+
+			self.rem1=function(){                                        //Remove Function
+			self.data.remove(this);
+			}
+
+			self.disp=function(){                                        //Display function
+				  self.visibility(true);
+                  self.firstnamemessage(this.FirstName);
+                  self.lastnamemessage(this.LastName);
+                  self.emailmessage(this.Email);
+                  self.dojmessage(this.DateOfJoining);
+                  self.extmessage(this.Extension);
+                  self.isOnBenchmessage(this.isOnBench);
+                  a=self.data.indexOf(this);
+                }
+            
+            self.save=function(){                                       //Editting and saving function
+                   self.mess1=self.firstnamemessage();
+                   self.mess2=self.lastnamemessage();
+                   self.mess3=self.emailmessage();
+                   self.mess4=self.dojmessage();
+                   self.mess5=self.extmessage();
+                   self.mess6=self.isOnBenchmessage();
+                  this.arr2=ko.observable({
+                   	FirstName: self.mess1,LastName: self.mess2,Email: self.mess3,DateOfJoining: self.mess4,Extension: self.mess5,isOnBench: self.mess6
+                   });
+
+                     self.data.splice(a,1,this.arr2());
+                     self.visibility(false);
+     				 }
+     		self.addnew=function(){                         //Add New Employee button at the top
+     			self.visibility2(true);
+     		}		 
+     		self.add=function(){                            //Adding a new Employee(pushing in the array)
+     			
+     			   self.mess1=self.newfirstnamemessage();
+                   self.mess2=self.newlastnamemessage();
+                   self.mess3=self.newemailmessage();
+                   self.mess4=self.newdojmessage();
+                   self.mess5=self.newextmessage();
+                   self.mess6=self.newisOnBenchmessage();
+                   self.newfirstnamemessage("");
+                   self.newlastnamemessage("");
+                   self.newemailmessage("");
+                   self.newdojmessage("");
+                   self.newextmessage("");
+                   self.newisOnBenchmessage("");
+                 this.arr2=ko.observable({
+                   	FirstName: self.mess1,LastName: self.mess2,Email: self.mess3,DateOfJoining: self.mess4,Extension: self.mess5,isOnBench: self.mess6
+                   });
+             
+                 self.data.push(this.arr2);
+                 self.visibility2(false);
+     		}
+     		self.sortClick = function (column) {                       //sorting function on click
+                
+                    if (column.state() === "" || column.state() === self.descending) {
+                        column.state(self.ascending);
+                    }
+                    else {
+                        column.state(self.descending);
+                    }
+
+                    switch (column.type) {
+                        case "number":
+                            self.numberSort(column);
+                            break;
+                        case "date":
+                            self.dateSort(column);
+                            break;
+                        case "object":
+                            self.objectSort(column);
+                            break;
+                        case "string":
+                        default:
+                            self.stringSort(column);
+                            break;
+                    }
+                 };
+   
+     self.stringSort = function (column) {                             //String sort function
+                    // Pass in the column object
+
+                self.data(self.data().sort(function (a, b) {
+
+                    // Set strings to lowercase to sort properly
+                    var playerA = a[column.property].toLowerCase(), playerB = b[column.property].toLowerCase();
+                    if (playerA < playerB) {
+                        return (column.state() === self.ascending) ? -1 : 1;
+                    }
+                    else if (playerA > playerB) {
+                        return (column.state() === self.ascending) ? 1 : -1;
+                    }
+                    else {
+                        return 0
+                    }
+                }));
+            };
+
+            self.numberSort = function (column) {                   //Number sort function
+                self.data(self.data().sort(function (a, b) {
+
+                    var playerA = a[column.property], playerB = b[column.property];
+                    if (column.state() === self.ascending) {
+                        return playerA - playerB;
+                    }
+                    else {
+                        return playerB - playerA;
+                    }
+                }));
+
+            };
+
+            self.dateSort = function (column) {                   // Sort by date
+
+                self.data(self.data().sort(function (a, b) {
+
+                    if (column.state() === self.ascending) {
+                        return new Date(a[column.property]) - new Date(b[column.property]);
+                    }
+                    else {
+                        return new Date(b[column.property]) - new Date(a[column.property]);
+                    }
+                }));
+            };
+
+       
+}
+		ko.applyBindings(new AppViewModel());
+});
+</script>
+</body>
+</html>
