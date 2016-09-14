@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <style type="text/css" href="workshop.css"></style>
+      <style type="text/css" href="C:\Users\shibayanc\Desktop\workshop\workshop.css"></style>
+      <script src="http://knockoutjs.com/downloads/knockout-3.3.0.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="komap.js"></script>
+      <title></title>
+   </head>
+   <body>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <div class="page-header wrapper">
+         <h1><a href="http://127.0.0.1:2020/workshop.html">Online Book Store</a></h1>
+      </div>
+      <form >
+         <div class="container-fluid" data-bind="visible: buttoncontainer">
+            <button class="btn btn-primary" data-bind="click: addnewauthorbutton">Add New Author</button>
+            <button class="btn btn-primary" data-bind="click: addnewbookbutton">Add New Book</button>
+         </div>
+      </form>
+      <table class="table table-responsive table-striped table-inverse" data-bind="visible: visibility_main">
+         <tr>
+            <th>Isbn</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Available On</th>
+         </tr>
+         <tbody data-bind="foreach: data">
+            <td data-bind="text: $data.isbn, click: $root.showbyisbn"></td>
+            <td data-bind="text: $data.title"></td>
+            <td data-bind="text: $data.author, click: $root.showbyname"></td>
+            <td data-bind="text: $data.price"></td>
+            <td data-bind="text: $data.availableOn"></td>
+         </tbody>
+      </table>
+      <div data-bind="visible: visibility" class="centre">
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">ISBN : </label>
+         <p data-bind="text: isbnmessage"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Title : </label>
+         <p data-bind="text: titlemessage"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Author : </label>
+         <p data-bind="text: authormessage"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Price : </label>
+         <p data-bind="text: pricemessage"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Available On : </label>
+         <p data-bind="text: availableOnmessage"></p>
+         </div>
+         <div class="form-group row">
+         <button class="btn btn-primary" data-bind="click: isbnupdate">Update</button>
+         <button class="btn btn-primary" data-bind="click: isbndelete">Delete</button>
+         </div>
+      </div>
+
+      <div data-bind="visible: visibility3">
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">ISBN : </label>
+         <input type="text" data-bind="value: isbnmessage" disabled="disabled"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Title : </label>
+         <input type="text" data-bind="value: titlemessage" required="required"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Author : </label>
+         <input type="text" data-bind="value: authormessage" required="required"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Price : </label>
+         <input type="number" data-bind="value: pricemessage" required="required"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Available On : </label>
+         <label data-bind="foreach: availableOn"><input type="checkbox" data-bind="checkedValue:$data,checked: $parent.availableOn2"><span data-bind="text: $data"></span>
+         </label>
+         </div>
+         <div class="form-group row">
+         <button class="btn btn-primary" data-bind="click: isbnsave">Update</button>
+         </div>
+      </div>
+
+      <div data-bind="visible: visibility2">
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Employee Id : </label>
+         <p data-bind="text: empid"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Name : </label>
+         <p data-bind="text: name"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Email : </label>
+         <p data-bind="text: email"></p>
+         </div>
+         <div class="form-group row">
+         <label class="col-md-3 col-form-label">Skills : </label>
+         <p data-bind="text: skills"></p>
+         </div>
+         <div class="form-group row">
+         <button class="btn btn-primary" data-bind="click: authorupdate">Update</button>
+         <button class="btn btn-primary" data-bind="click: authordelete">Delete</button>
+         </div>
+      </div>
+
+      <div data-bind="visible: visibility4">
+         <div class="form-group row">
+         <p><label class="col-md-3 col-form-label">Employee Id :</label>
+         <input type="number" data-bind="value: empid" disabled="disabled" required="required"></p>
+         </div>
+         <div class="form-group row">
+         <p><label class="col-md-3 col-form-label">Name : </label>
+         <input type="text" data-bind="value: name" required="required"></p>
+         </div>
+         <div class="form-group row">
+         <p><label class="col-md-3 col-form-label">Email : </label>
+         <input type="email" data-bind="value: email" required="required"></p>
+         </div>
+         <div class="form-group row">
+         <p><label class="col-md-3 col-form-label">Skills : </label>
+         <label data-bind="foreach: skills">
+         <input type="checkbox" data-bind="checkedValue: $data,checked: $parent.skills2">
+         <span data-bind="text: $data"></span></label></p>
+         </div>
+         <div class="form-group">
+         <button class="btn btn-primary" data-bind="click: authorsave">Save</button>
+         </div>
+      </div>
+<div>
+<form data-bind="visible: newbookform" class="table table-bordered">
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">ISBN: </label><input type="number" data-bind="value: newbookisbn" required="true">
+    </div>
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Title: </label><input type="text" data-bind="value: newbooktitle" required="true">
+    </div>
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Author: </label><input type="text" data-bind="value: newbookauthor" required="true">
+    </div>
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Price: </label><input type="number" data-bind="value: newbookprice" required="true">
+    </div>
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Available On</label>
+    <label data-bind="foreach: newbookavailableOn"><input type="checkbox" data-bind="checkedValue: $data,checked: $parent.newbookavailableOn2">
+    <span data-bind="text: $data"></span></label>
+    </div>
+    <div class="form-group">
+    <button class="btn btn-primary" data-bind="click:addnewbook">Save</button>
+    </div>
+</form>
+</div>
+<div>
+<form data-bind="visible: newauthorform" class="table table-bordered">
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Employee Id</label><input type="number" data-bind="value: newempid" required="required">
+    </div>
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Name</label><input type="text" data-bind="value: newname" required="required">
+    </div>
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Email</label><input type="email" data-bind="value: newemail" required="required">
+    </div>
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Website</label><input type="url" data-bind="value: newwebsite">
+    </div>
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Department</label><input type="text" data-bind="value: newdepartment">
+    </div>
+     
+    <div class="form-group row">
+    <label class="col-md-3 col-form-label">Skills:</label>
+    <label data-bind="foreach: newskills"><input type="checkbox" data-bind="checkedValue: $data,checked: $parent.newskills2">
+    <span data-bind="text: $data"></span></label>
+    </div>
+    <button class="btn btn-primary" data-bind="click: addnewauthor">Save</button>
+</form>
+</div>
+      <script type="text/javascript" src="workshop.js"></script>
+   </body>
+</html>
