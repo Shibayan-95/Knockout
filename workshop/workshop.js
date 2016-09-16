@@ -24,14 +24,15 @@
         self.titlemessage=ko.observable();
         self.authormessage=ko.observable();    
         self.pricemessage=ko.observable();
-        self.availableOnmessage=ko.observableArray();
+        self.availableOnmessage=ko.observableArray([]);
         self.empid=ko.observable();
         self.name=ko.observable();
         self.email=ko.observable();
         self.website=ko.observable();
         self.department=ko.observable();
+        self.skillsmessage=ko.observableArray([]);
         self.skills=ko.observableArray(['HTML','CSS','Java','NodeJS','Angular js','Knockout js','Javascript','JQuery','C','C++','Python','MATLAB','React Js','Backbone']);
-        self.skills2=ko.observableArray();
+        self.skills2=ko.observableArray([]);
         self.authorlist=ko.observableArray();
         self.data=ko.observableArray([]);
         self.employeedetails=ko.observable();
@@ -39,9 +40,9 @@
         self.newbooktitle=ko.observable();
         self.newbookauthor=ko.observable();
         self.newbookprice=ko.observable();
-        self.newbookavailableOn=ko.observableArray(['Amazon','Flipkart','Ebay','Snapdeal']);
-        self.newbookavailableOn2=ko.observableArray();
-        self.availableOn=ko.observableArray(['Amazon','Flipkart','Ebay','Snapdeal']);
+        self.newbookavailableOn=ko.observableArray(['Amazon','Flipkart','eBay','Snapdeal','Google']);
+        self.newbookavailableOn2=ko.observableArray([]);
+        self.availableOn=ko.observableArray(['Amazon','Flipkart','eBay','Snapdeal','Google']);
         self.availableOn2=ko.observableArray([]);
       
          $.ajax({
@@ -93,7 +94,7 @@
                            self.empid(result.empid);
                            self.name(result.name);
                            self.email(result.email);
-                           self.skills(result.skills);
+                           self.skillsmessage(result.skills);
                        }
                     });    
                 } 
@@ -177,6 +178,7 @@
                     $.ajax({
                        url:"http://172.27.12.104:3000/book/remove",
                        dataType:"json",
+
                        data: deletebook,
                        type:"DELETE",
                        success:function(result){
@@ -191,18 +193,24 @@
                 }
 
         self.isbnsave=function(){
-                     var updatedbook= {"isbn" : self.isbnmessage,
+                    /* var updatedbook= ko.toJSON({"isbn" : self.isbnmessage,
                                   "title" : self.titlemessage,
                                   "author" : self.authormessage,
                                   "price" : self.pricemessage,
-                                  "availableOn" : self.availableOnmessage }
+                                  "availableOn" : self.availableOn2()});*/
                     $.ajax({
                        url:"http://172.27.12.104:3000/book/update",
                        dataType:"json",
-                       data: updatedbook,
+                       contentType: "application/json",                    
+                       data: ko.toJSON({"isbn" : self.isbnmessage,
+                                  "title" : self.titlemessage,
+                                  "author" : self.authormessage,
+                                  "price" : self.pricemessage,
+                                  "availableOn" : self.availableOnmessage}),
                        type:"PUT",
                        success:function(result){
                          alert(result.message);
+                         console.log(self.availableOnmessage);
                            }
                     });
                     location.reload();
@@ -241,7 +249,7 @@
                      var updatedbook= {"empid" : self.empid,
                                          "name" : self.name,
                                          "email" : self.email,
-                                         "skills" : self.skills2};
+                                         "skills" : self.skillsmessage};
                     $.ajax({
                        url:"http://172.27.12.104:3000/author/update",
                        dataType:"json",
